@@ -1,7 +1,6 @@
 import requests
-import app.global_var as gc
+import app.global_var as gv
 
-bvid = ""
 pagelist_api = "https://api.bilibili.com/x/player/pagelist"
 subtitle_api = "https://api.bilibili.com/x/player/v2"
 headers = {
@@ -20,36 +19,22 @@ def _get_player_list(bvid: str):
     return cid_list
 
 def _get_subtitle_list(bvid: str, cid: str):
-    headers['cookie'] = gc.return_var()
+    headers['cookie'] = gv.return_cookie()
     response = requests.get(subtitle_api, params = (('bvid', bvid),('cid', cid)), headers = headers)
-    print(headers)
     subtitle_list = response.json()['data']['subtitle']['subtitles']
     return subtitle_list
-
-def _get_subtitle(cid: str):
-    subtitles = _get_subtitle_list(cid)
-    if subtitles:
-        return _request_subtitle(subtitles[0])
-
-def _request_subtitle(url: str):
-    response = requests.get(url)
-    if response.status_code == 200:
-        body = response.json()['body']
-        return body
 
 def _get_pagelist(bvid: str):
     response = requests.get(pagelist_api, params = {'bvid': bvid}, headers = headers)
     pagelist = len(response.json()['data'])
     return pagelist
 
-def download_subtitle():
-    page = _get_pagelist()
-    subtitle_list = _get_subtitle(_get_player_list()[page])
-    if subtitle_list:
-        text_list = [x['content'] for x in subtitle_list]
+def _get_subtitle(url: str):
+    subtitle = requests.get(url, headers = headers).json()['body']
+    if subtitle:
+        text_list = [x['content'] for x in subtitle]
         text = ' '.join(text_list)
-        print("字幕获取成功\n")
         return text
     else:
-        text = "该视频没有可供下载的字幕"
+        text = "There is no subtitle"
         return text

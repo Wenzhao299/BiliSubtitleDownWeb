@@ -1,24 +1,23 @@
 from django.shortcuts import render, HttpResponse
 import app.subtitle_down as sd
-import app.global_var
+import app.global_var as gv
 
 # Create your views here.
 def index(request):
-    app.global_var.update_var(request.POST.get("cookie"))
+    gv.update_cookie(request.POST.get("cookie"))
     return render(request, "index.html")
 
 def bvid(request):
-    bvid = request.POST.get("bvid")
-    sd.bvid = bvid
-    pagelist = sd._get_pagelist(sd.bvid)
+    gv.update_bvid(request.POST.get("bvid"))
+    pagelist = sd._get_pagelist(gv.return_bvid())
     return render(request, "index.html", {"pagelist": pagelist})
 
 def page(request):
-    page = int(request.POST.get("page")) - 1
-    cid_list = sd._get_player_list(sd.bvid)
-    # print(cid_list[page])
-    subtitle_list = sd._get_subtitle_list(sd.bvid, cid_list[page])
-    # print(subtitle_list)
+    gv.update_page(int(request.POST.get("page")) - 1)
+    cid_list = sd._get_player_list(gv.return_bvid())
+    cid = cid_list[gv.return_page()]
+    gv.update_cid(cid)
+    subtitle_list = sd._get_subtitle_list(gv.return_bvid(), cid)
     sub_list = ""
     if subtitle_list:
         n = 1
@@ -29,4 +28,6 @@ def page(request):
 
 def sub(request):
     sub = int(request.POST.get("sub")) - 1
-    # 'https:' + sub_list[sub]['subtitle_url']
+    sub_url = 'https:' + sd._get_subtitle_list(gv.return_bvid(), gv.return_cid())[sub]['subtitle_url']
+    text = sd._get_subtitle(sub_url)
+    return render(request, "index.html", {"text": text})
