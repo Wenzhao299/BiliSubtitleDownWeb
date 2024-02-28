@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiliSubDown</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1-dist/css/bootstrap.css'%}">
+</head>
+<body>
+    <h1>BiliSubtitleDownload</h1>
+    
+    <form method="post" action="/index/">
+        {% csrf_token %}
+        <label>B站Cookie：</label>
+        <input type="text" name="cookie" placeholder="cookie">
+        <input type="submit" value="submit">
+    </form>
+
+    <form method="post" action="/bvid/">
+        {% csrf_token %}        
+        <label>视频bvid：</label>
+        <input type="text" name="bvid" placeholder="bvid">
+        <input type="submit" value="submit">
+    </form>
+
+    <span>Page_list: {{pagelist}}</span>
+
+    <form method="post" action="/page/">
+        {% csrf_token %}        
+        <label>选择集数page：</label>
+        <input type="text" name="page" placeholder="page">
+        <input type="submit" value="submit">
+    </form>
+
+    <form method="post" action="/sub/">
+        {% csrf_token %}        
+        <label>选择字幕序列：</label>
+        <input type="text" name="sub" placeholder="sub">
+        <input type="submit" value="submit">
+    </form>
+
+    <span>Subtitle_list: {{sub_list}}</span>
+
+
+    
+
+
+    
+</body>
+
+<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/bootstrap-3.4.1-dist/js/bootstrap.js' %}"></script>
+
+</html>
