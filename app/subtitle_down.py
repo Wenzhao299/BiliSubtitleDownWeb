@@ -19,7 +19,7 @@ def _get_player_list(bvid: str):
     return cid_list
 
 def _get_subtitle_list(bvid: str, cid: str):
-    headers['cookie'] = gv.return_cookie()
+    headers['cookie'] = gv.get_obj('cookie')
     response = requests.get(subtitle_api, params = (('bvid', bvid),('cid', cid)), headers = headers)
     subtitle_list = response.json()['data']['subtitle']['subtitles']
     return subtitle_list

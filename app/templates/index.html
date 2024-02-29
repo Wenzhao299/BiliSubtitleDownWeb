@@ -13,36 +13,36 @@
     <form method="post" action="/index/">
         {% csrf_token %}
         <label>B站cookie：</label>
-        <input type="text" name="cookie" placeholder="cookie">
+        <input type="text" name="cookie" value={{obj.cookie}}>
         <input type="submit" value="submit">
     </form>
 
     <form method="post" action="/bvid/">
         {% csrf_token %}        
         <label>视频bvid：</label>
-        <input type="text" name="bvid" placeholder="bvid">
+        <input type="text" name="bvid" value={{obj.bvid}}>
         <input type="submit" value="submit">
     </form>
 
-    <span>视频集数: {{pagelist}}</span>
+    <span>视频集数: {{obj.pagelist}}</span>
 
     <form method="post" action="/page/">
         {% csrf_token %}        
         <label>选择集数page：</label>
-        <input type="text" name="page" placeholder="page">
+        <input type="text" name="page" value={{obj.page|add:1}}>
         <input type="submit" value="submit">
     </form>
 
-    <span>字幕列表: {{sub_list}}</span>
+    <span>字幕列表: {{obj.sub_list}}</span>
 
     <form method="post" action="/sub/">
         {% csrf_token %}        
         <label>选择字幕序号：</label>
-        <input type="text" name="sub" placeholder="sub">
+        <input type="text" name="sub" value={{obj.sub|add:1}}>
         <input type="submit" value="submit">
     </form>
 
-    <span>字幕文本: <br> {{text}}</span>    
+    <span>字幕文本: <br> {{obj.text}}</span>    
     
 </body>
 
